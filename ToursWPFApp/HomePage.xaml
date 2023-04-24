@@ -1,0 +1,15 @@
+﻿<Page x:Class="ToursWPFApp.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ToursWPFApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="345" d:DesignWidth="800"
+      Title="Домашняя страница">
+
+    <WrapPanel Orientation="Horizontal">
+        <Button Content="Отели" x:Name="bHotels" Click="bHotels_Click"/>
+        <Button Content="Туры" x:Name="bTours" Click="bTours_Click"/>
+    </WrapPanel>
+</Page>

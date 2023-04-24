@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ToursModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Hotel" Relationship="Self.FK__Hotel__CountryCo__286302EC" FromRole="Country" ToRole="Hotel" />
+  </EntityType>
+  <EntityType Name="Hotel">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="StarCount" Type="Byte" />
+    <Property Name="CountryCode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="Country" Relationship="Self.FK__Hotel__CountryCo__286302EC" FromRole="Hotel" ToRole="Country" />
+    <NavigationProperty Name="HotelComment" Relationship="Self.FK__HotelComm__Hotel__2E1BDC42" FromRole="Hotel" ToRole="HotelComment" />
+    <NavigationProperty Name="HotelImages" Relationship="Self.FK__HotelImag__Hotel__2B3F6F97" FromRole="Hotel" ToRole="HotelImages" />
+    <NavigationProperty Name="Tour" Relationship="Self.TourHotels" FromRole="Hotel" ToRole="Tour" />
+  </EntityType>
+  <EntityType Name="HotelComment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="HotelID" Type="Int32" Nullable="false" />
+    <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Author" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Hotel" Relationship="Self.FK__HotelComm__Hotel__2E1BDC42" FromRole="HotelComment" ToRole="Hotel" />
+  </EntityType>
+  <EntityType Name="HotelImages">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="HotelID" Type="Int32" Nullable="false" />
+    <Property Name="ImageSource" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="Hotel" Relationship="Self.FK__HotelImag__Hotel__2B3F6F97" FromRole="HotelImages" ToRole="Hotel" />
+  </EntityType>
+  <EntityType Name="Tour">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="TicketCount" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ImagePreview" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IsAvailable" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Hotel" Relationship="Self.TourHotels" FromRole="Tour" ToRole="Hotel" />
+    <NavigationProperty Name="Type" Relationship="Self.TourTypes" FromRole="Tour" ToRole="Type" />
+  </EntityType>
+  <EntityType Name="Type">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Tour" Relationship="Self.TourTypes" FromRole="Type" ToRole="Tour" />
+  </EntityType>
+  <Association Name="FK__Hotel__CountryCo__286302EC">
+    <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="Hotel">
+        <PropertyRef Name="CountryCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__HotelComm__Hotel__2E1BDC42">
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="1" />
+    <End Role="HotelComment" Type="Self.HotelComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hotel">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="HotelComment">
+        <PropertyRef Name="HotelID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__HotelImag__Hotel__2B3F6F97">
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="1" />
+    <End Role="HotelImages" Type="Self.HotelImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hotel">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="HotelImages">
+        <PropertyRef Name="HotelID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TourHotels">
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="*" />
+    <End Role="Tour" Type="Self.Tour" Multiplicity="*" />
+  </Association>
+  <Association Name="TourTypes">
+    <End Role="Tour" Type="Self.Tour" Multiplicity="*" />
+    <End Role="Type" Type="Self.Type" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="ToursEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Country" EntityType="Self.Country" />
+    <EntitySet Name="Hotel" EntityType="Self.Hotel" />
+    <EntitySet Name="HotelComment" EntityType="Self.HotelComment" />
+    <EntitySet Name="HotelImages" EntityType="Self.HotelImages" />
+    <EntitySet Name="Tour" EntityType="Self.Tour" />
+    <EntitySet Name="Type" EntityType="Self.Type" />
+    <AssociationSet Name="FK__Hotel__CountryCo__286302EC" Association="Self.FK__Hotel__CountryCo__286302EC">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Hotel" EntitySet="Hotel" />
+    </AssociationSet>
+    <AssociationSet Name="FK__HotelComm__Hotel__2E1BDC42" Association="Self.FK__HotelComm__Hotel__2E1BDC42">
+      <End Role="Hotel" EntitySet="Hotel" />
+      <End Role="HotelComment" EntitySet="HotelComment" />
+    </AssociationSet>
+    <AssociationSet Name="FK__HotelImag__Hotel__2B3F6F97" Association="Self.FK__HotelImag__Hotel__2B3F6F97">
+      <End Role="Hotel" EntitySet="Hotel" />
+      <End Role="HotelImages" EntitySet="HotelImages" />
+    </AssociationSet>
+    <AssociationSet Name="TourHotels" Association="Self.TourHotels">
+      <End Role="Hotel" EntitySet="Hotel" />
+      <End Role="Tour" EntitySet="Tour" />
+    </AssociationSet>
+    <AssociationSet Name="TourTypes" Association="Self.TourTypes">
+      <End Role="Tour" EntitySet="Tour" />
+      <End Role="Type" EntitySet="Type" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
